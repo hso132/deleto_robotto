@@ -12,8 +12,11 @@ monitored_channels = []
 # - Add list command
 # - Add the option to specify a time interval
 # - Add a timeout to deletion (to avoid hanging too long on a single channel)
+# - Check all the functions called to catch any potential exceptions
 # - Write a command list
 # - Implement proper logging lmfao
+
+# Why did I decide to make this bot official, again?
 
 stop = False
 @client.event
