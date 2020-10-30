@@ -102,10 +102,11 @@ async def del_messages(channel):
     try:
         await channel.purge(before = yesterday, limit = 20)
     except discord.HTTPException as e:
-        print(e)
+        print(f"Error occurred: {e}")
         return True
+
     except discord.Forbidden as e:
-        print(e)
+        print(f"Error occurred: {e}")
         return False
 
     print("done")
