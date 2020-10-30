@@ -98,19 +98,21 @@ async def del_messages(channel):
     # Fuuuuuck do I not wanna implement proper logging
     print("checking channel", channel)
 
+    permission = True
     yesterday = datetime.datetime.now() - datetime.timedelta(hours = 24)
     try:
         await channel.purge(before = yesterday, limit = 20)
     except discord.HTTPException as e:
         print(f"Error occurred: {e}")
-        return True
+        if e.code == 50013: # 'Missing Permission'
+            permission = False
 
     except discord.Forbidden as e:
-        print(f"Error occurred: {e}")
-        return False
+        print(f"Error occurredaoeu: {e}")
+        permission = False
 
     print("done")
-    return True
+    return permission
 
 with open("token.txt", "r") as f:
     token = f.read()
