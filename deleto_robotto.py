@@ -86,7 +86,9 @@ async def run():
                 print("Could not find channel with id", monitored_channel)
 
         for channel, cor in coroutines:
-            if not await cor:
+            result = await cor
+
+            if not result:
                 monitored_channels.remove(channel)
                 print("Insufficient permissions; removing channel")
 
