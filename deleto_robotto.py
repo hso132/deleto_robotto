@@ -79,13 +79,16 @@ async def run():
                     if c.id == monitored_channel:
                         channel = c
             if channel is not None:
-                coroutines.append(del_messages(channel))
+                cor = del_messages(channel)
+                coroutines.append((monitored_channel,cor))
             else:
                 monitored_channels.remove(monitored_channel)
                 print("Could not find channel with id", monitored_channel)
 
-        for cor in coroutines:
-            await cor
+        for channel, cor in coroutines:
+            if not await cor:
+                monitored_channels.remove(channel)
+                print("Insufficient permissions; removing channel")
 
         await asyncio.sleep(5)
 
@@ -98,10 +101,13 @@ async def del_messages(channel):
         await channel.purge(before = yesterday, limit = 20)
     except discord.HTTPException as e:
         print(e)
+        return True
     except discord.Forbidden as e:
         print(e)
+        return False
 
     print("done")
+    return True
 
 with open("token.txt", "r") as f:
     token = f.read()
